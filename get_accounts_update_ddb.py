@@ -24,6 +24,7 @@ accounts = org.list_accounts()
 #clean up response and get list of accounts
 list_accounts = accounts["Accounts"]
 number_of_accounts = len(list_accounts)
+print("Number of accounts : ", number_of_accounts)
 for l in list_accounts:
     print(l)
     accountId = l['Id']
@@ -43,4 +44,3 @@ for l in list_accounts:
     l['parentType'] = parentType
     load_data(l)
 
-print("Number of accounts : " , number_of_accounts)
