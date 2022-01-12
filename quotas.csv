@@ -1,6 +1,6 @@
-﻿OUId,Region,QuotaCode,DesiredQuotaValue,DesiredSupportLevel
-ou-65br-kjlboqtj,us-east-1,L-1216C47A,100,enterprise
-ou-65br-aonyiw9c,us-west-2,L-1216C47A,150,enterprise
-ou-65br-aonyiw9c,us-east-1,L-F678F1CE,6,enterprise
-ou-65br-aonyiw9c,us-east-2,L-F678F1CE,6,enterprise
+﻿OUId,Region,ServiceCode,QuotaCode,DesiredValue,DesiredSupportLevel
+ou-65br-kjlboqtj,us-east-1,ec2,L-1216C47A,100,enterprise
+ou-65br-aonyiw9c,us-west-2,ec2,L-1216C47A,150,enterprise
+ou-65br-aonyiw9c,us-east-1,vpc,L-F678F1CE,6,enterprise
+ou-65br-aonyiw9c,us-east-2,vpc,L-F678F1CE,6,enterprise
 

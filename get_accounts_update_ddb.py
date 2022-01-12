@@ -42,5 +42,6 @@ for l in list_accounts:
     parentType = parent['Parents'][0]['Type']
     l['parentId'] = parentId
     l['parentType'] = parentType
+    l['Quotas'] = {}
     load_data(l)
 

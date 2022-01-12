@@ -38,19 +38,15 @@ def read_quotas_csv():
         return (df)
 # once all the dataframe is constructed from CSV lets iterate over the rows
 
-def update_ddb_with_quota(accountIds,QuotaCode,Region,DesiredQuotaValue,DesiredSupportLevel):
+def update_ddb_with_quota(accountIds,ServiceCode, QuotaCode,Region,DesiredQuotaValue,DesiredSupportLevel):
     for a in accountIds:
         #Lets get latest Item
         ddb_item = table.get_item(Key={'Id': a})
-
-        #Update Item
-#        ddb_item['Item']['Quotas'] = { QuotaCode:  { 'Regions' : {'Region': Region , 'DesiredQuotaValue': DesiredQuotaValue }}}
-
-        ddb_item['Item']['Quotas'].update({ QuotaCode:  { 'Regions' : {'Region': Region , 'DesiredQuotaValue': DesiredQuotaValue }}})
-
-        pprint.pprint(ddb_item)
+        ddb_item['Item']['Quotas'].update({ ServiceCode : {QuotaCode:  {'Regions': { Region : { 'DesiredQuotaValue': DesiredQuotaValue, 'Status': 'New'}}}}})
+        #pprint.pprint(ddb_item)
 
         #Overwrite Item, this approach is not ideal instead we should update the existing Item
+        pprint.pprint(ddb_item['Item'])
         table.put_item(Item = ddb_item['Item'])
 
 
@@ -59,14 +55,15 @@ for index, row in df.iterrows():
     print(row)
     OUId = row['OUId']
     QuotaCode = row['QuotaCode']
-    DesiredQuotaValue = row['DesiredQuotaValue']
+    ServiceCode = row['ServiceCode']
+    DesiredQuotaValue = row['DesiredValue']
     DesiredSupportLevel = row['DesiredSupportLevel']
     Region = row['Region']
     print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-    print ('Iterating for OU : ', OUId, 'QuotaCode : ', QuotaCode, 'and Region : ', Region)
+    print ('Iterating for OU : ', OUId,'ServiceCode :', ServiceCode, 'QuotaCode : ', QuotaCode, 'and Region : ', Region)
     accountIds = extract_accountId_for_parentId(OUId)
     print(accountIds)
-    update_ddb_with_quota(accountIds,QuotaCode,Region,DesiredQuotaValue,DesiredSupportLevel)
+    update_ddb_with_quota(accountIds,ServiceCode, QuotaCode,Region,DesiredQuotaValue,DesiredSupportLevel)
 
 
 
