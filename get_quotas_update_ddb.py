@@ -7,7 +7,7 @@ import pprint
 S3_BUCKET = '432177588334-quotas'
 AWS_REGION = 'us-east-1'
 QUOTAS_FILE = 'quotas.csv'
-DDB_TABLE = 'accounts'
+DDB_TABLE = 'lmao-table1'
 
 s3_resource = boto3.resource('s3', region_name = AWS_REGION)
 s3_object = s3_resource.Object(S3_BUCKET,QUOTAS_FILE)

@@ -1,0 +1,113 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Get Ticket",
+  "States": {
+    "Get Ticket": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Choice"
+    },
+    "Choice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "Quota Ticket"
+        }
+      ],
+      "Default": "Wait Ticket"
+    },
+    "Quota Ticket": {
+      "Type": "Pass",
+      "Next": "AssumeRole request SQ via SQ API update DDB"
+    },
+    "AssumeRole request SQ via SQ API update DDB": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Check inflight SQ request per region"
+    },
+    "Check inflight SQ request per region": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Choice (1)"
+    },
+    "Choice (1)": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "If two"
+        }
+      ],
+      "Default": "if less than 2"
+    },
+    "if less than 2": {
+      "Type": "Pass",
+      "Next": "AssumeRole request SQ via SQ API update DDB"
+    },
+    "If two": {
+      "Type": "Pass",
+      "Next": "Wait 6 hours"
+    },
+    "Wait 6 hours": {
+      "Type": "Wait",
+      "Seconds": 5,
+      "End": true
+    },
+    "Wait": {
+      "Type": "Wait",
+      "Seconds": 5,
+      "End": true
+    },
+    "Wait Ticket": {
+      "Type": "Pass",
+      "End": true
+    }
+  }
+}

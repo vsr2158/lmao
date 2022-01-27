@@ -2,7 +2,7 @@ import boto3
 from botocore.config import Config
 import json
 
-DDB_TABLE = 'accounts'
+DDB_TABLE = 'lmao-table1'
 
 my_config = Config(
     region_name = 'us-east-1',
