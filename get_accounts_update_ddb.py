@@ -16,7 +16,7 @@ my_config = Config(
 def load_data(l):
     print("loading in DDB " , l )
     dynamodb = boto3.resource('dynamodb', config=my_config)
-    table = dynamodb.Table('accounts')
+    table = dynamodb.Table(DDB_TABLE)
     table.put_item(Item=l)
 
 org = boto3.client('organizations')
