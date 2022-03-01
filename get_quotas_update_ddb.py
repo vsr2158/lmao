@@ -7,12 +7,13 @@ import pprint
 S3_BUCKET = '432177588334-quotas'
 AWS_REGION = 'us-east-1'
 QUOTAS_FILE = 'quotas.csv'
-DDB_TABLE = 'accounts'
+DDB_TABLE = 'accounts-raovi'
 
 s3_resource = boto3.resource('s3', region_name = AWS_REGION)
 s3_object = s3_resource.Object(S3_BUCKET,QUOTAS_FILE)
 ddb_resource = boto3.resource('dynamodb', region_name = AWS_REGION)
 ddb_table = ddb_resource.Table(DDB_TABLE)
+
 dynamodb = boto3.resource('dynamodb',region_name = AWS_REGION )
 table = dynamodb.Table('accounts')
 
@@ -47,7 +48,7 @@ def update_ddb_with_quota(accountIds,ServiceCode, QuotaCode,Region,DesiredQuotaV
 
         #Overwrite Item, this approach is not ideal instead we should update the existing Item
         pprint.pprint(ddb_item['Item'])
-        table.put_item(Item = ddb_item['Item'])
+        #table.put_item(Item = ddb_item['Item'])
 
 
 df = read_quotas_csv()
